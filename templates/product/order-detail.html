@@ -1,0 +1,259 @@
+{% extends 'custom_admin/index.html' %}
+{% load static %}
+{% block title %}Order Detail{% endblock title %}
+{% block main-content %}
+
+
+{% block content %}
+{% endblock content %}
+<style>
+  table{
+    background-color: #fff;
+  }
+  .txt-color{
+    color: #007bff;
+  }
+  .txt{
+    color: gray;
+  }
+  .action-btn{
+    border: 1px solid #ddd; 
+    border-radius: 4px;
+    background-color:#ddd; 
+    padding: 10px;
+  }
+  .add-btn{
+    float: right;
+    border: 1px solid green;
+    border-radius: 4px;
+    background-color: #fff;
+    color: green;
+    padding: 10px;
+    
+  }
+  .add-btn i{
+    margin-right: 5px;
+    
+  }
+  .del-btn{
+    float: right;
+    border: 1px solid red;
+    border-radius: 4px;
+    background-color: #fff;
+    color:red;
+    padding:  10px 20px;
+    margin-right: 10px
+    
+  }
+
+  h5{
+      font-size: 18px;
+  }
+
+  .panel-default{
+      border: 1px solid #dcdcdc;
+      border-top: 1px solid #dcdcdc;
+      background: #fff;
+  }
+
+  .panel-default .panel-heading{
+      color: #4c4d5a;
+      border-color: #dcdcdc;
+      background: #f6f6f6;
+  }
+  .panel-heading h3{
+      font-weight: 500;
+
+  }
+
+  .panel-title{
+      margin-top: 0;
+      margin-bottom: 0;
+      font-size: 20px;
+      color:inherit;
+      padding: 10px;
+  }
+
+  .panel-body{
+      padding: 10px;
+  }
+
+  
+</style>
+<div class="content-wrapper">
+  <div class="container">
+    {% if messages %}
+    {% for message in messages %}
+        <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}">
+        {{ message }}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+    {% endfor %}
+    {% endif %}
+
+  </div>
+  
+  
+  
+    <div class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1 class="m-0 text-dark">Order Detail</h1>
+          </div><!-- /.col -->
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a href="{% url 'custom_admin:admin-home-view' %}">Home</a></li>
+              <li class="breadcrumb-item active">Order Detail</li>
+            </ol>
+          </div><!-- /.col -->
+        </div><!-- /.row -->
+      </div><!-- /.container-fluid -->
+    </div>
+    <!-- /.content-header -->
+
+    <!-- Main content -->
+    <section class="content">
+      <div class="container-fluid">
+        <div class="container mt-2 mb-2">
+            {% if order_detail%}
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                        <h3 class="panel-title"><i class="mr-2 fa fa-shopping-cart"></i> Order Details</h3>
+                        </div>
+                    <table class="table">
+                    <tbody>
+                        <tr>
+                        <td style="width: 1%;"><button data-toggle="tooltip" title="Store" class="btn btn-info btn-xs"><i class="fa fa-shopping-cart fa-fw"></i></button></td>
+                        <td><a href="" target="_blank">{{order_detail.id}}</a></td>
+                        </tr>
+                        <tr>
+                        <td><button data-toggle="tooltip" title="Date Added" class="btn btn-info btn-xs"><i class="fas fa-calendar fa-fw"></i></button></td>
+                        <td>{{order_detail.placed_at}}</td>
+                        </tr>
+                        <tr>
+                        <td><button data-toggle="tooltip" title="Payment Method" class="btn btn-info btn-xs"><i class="fas fa-credit-card fa-fw"></i></button></td>
+                        <td>{{order_detail.payment_gateway}}</td>
+                        </tr>
+                        <tr>
+                        <td><button data-toggle="tooltip" title="Shipping Method" class="btn btn-info btn-xs"><i class="fas fa-truck fa-fw"></i></button></td>
+                        <td>{{order_detail.shipping_method}}</td>
+                    </tr>
+                    </tbody>
+                    </table>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                        <h3 class="panel-title"><i class="mr-2 fa fa-user"></i> Customer Details</h3>
+                        </div>
+                        <table class="table">
+                            <tr>
+                            <td style="width: 1%;"><button data-toggle="tooltip" title="Customer" class="btn btn-info btn-xs"><i class="fas fa-user fa-fw"></i></button></td>
+                            <td> <a href="" target="_blank">{{order_detail.user.get_full_name}}</a> </td>
+                            </tr>
+                            <tr>
+                            <td><button data-toggle="tooltip" title="E-Mail" class="btn btn-info btn-xs"><i class="fas fa-envelope fa-fw"></i></button></td>
+                            <td><a href="">{{order_detail.user.email}}</a></td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            {%else%}
+            {%endif%}
+        <div class="panel panel-default mt-4">
+            <div class="panel-heading">
+            <h3 class="panel-title"><i class="fa fa-info-circle mr-2"></i> Order ({{order_detail.id}})</h3>
+            </div>
+            <div class="panel-body">
+                <table class="table table-bordered">
+                    <thead>
+                    <tr>
+                    <td style="width: 50%;" class="text-left">Billing Address</td>
+                    <td style="width: 50%;" class="text-left">Shipping Address</td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                        <td class="text-left">{{order_detail.billing_address}}<br/>{{order_detail.billing_city}},{{order_detail.billing_postcode}}<br/>{{order_detail.billing_state}}<br/>{{order_detail.billing_country}}<br/></td>
+                        <td class="text-left">{{order_detail.shipping_address}}<br/>{{order_detail.shipping_city}},{{order_detail.shipping_postcode}}<br/>{{order_detail.shipping_state}}<br/>{{order_detail.shipping_country}}<br/></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <table class="table table-bordered">
+                    <thead>
+                    <tr>
+                    <td class="text-left">Product</td>
+                    <td class="text-left">Model</td>
+                    <td class="text-right">Quantity</td>
+                    <td class="text-right">Unit Price</td>
+                    <td class="text-right">Total</td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        {% if order_detail.orderitem_set %}
+                        {%for product in order_detail.orderitem_set.all %}
+                        <tr>
+                            <td class="text-left"><a href="">{{product.product.title}}</a></td>
+                            <td class="text-left">Product 21</td>
+                            <td class="text-right">{{product.quantity}}</td>
+                            <td class="text-right">{{product.unit_price}}</td>
+                            <td class="text-right">{{product.total}}</td>
+                        </tr>
+                        {%endfor%}
+                        {%else%}
+                        
+                        {%endif%}
+                        <tr>
+                        <td colspan="4" class="text-right">Sub-Total</td>
+                        <td class="text-right">{{order_detail.total_price}}</td>
+                        </tr>
+                        <tr>
+                        <td colspan="4" class="text-right">Flat Shipping Rate</td>
+                        <td class="text-right">{{order_detail.shipping_charges}}</td>
+                        </tr>
+                        {% if order_detail.coupon%}
+                        <tr>
+                          <td colspan="4" class="text-right">Coupon Applied</td>
+                          <td class="text-right">{{order_detail.coupon.percent_off}}% OFF</td>
+                        </tr>
+                        {%else%}
+                        <tr>
+                          <td colspan="4" class="text-right">Coupon Applied</td>
+                          <td class="text-right">-----</td>
+                        </tr>
+                        {%endif%}
+                        
+                        <tr>
+                        <td colspan="4" class="text-right">Total</td>
+                        <td class="text-right">{{order_detail.grand_total}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+            
+            
+        </div>
+        <h4 class="m-4">Change the Order Status</h4>
+        <div class="continer m-4">
+          <form id="change_order_status" method="post" action="">
+            {% csrf_token %}
+            {{form.as_p}}
+            <button type="submit" class="btn btn-primary">Update</button>
+          </form>
+        </div>
+        
+        </div><!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->
+  </div>
+  <!-- /.content-wrapper -->
+
+  {% endblock main-content %}

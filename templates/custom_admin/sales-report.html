@@ -1,0 +1,113 @@
+{% extends 'custom_admin/index.html' %}
+{% load static %}
+{% block title %}Sales Reports{% endblock title %}
+{% block main-content %}
+
+
+{% block content %}
+{% endblock content %}
+
+<div class="content-wrapper">
+    <div class="container">
+        {% if messages %}
+        {% for message in messages %}
+            <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}">
+            {{ message }}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        {% endfor %}
+        {% endif %}
+    </div>
+  
+    <div class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1 class="m-0 text-dark">Report</h1>
+          </div><!-- /.col -->
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a href="{% url 'custom_admin:admin-home-view' %}">Home</a></li>
+              <li class="breadcrumb-item active">Sales Reports</li>
+            </ol>
+          </div><!-- /.col -->
+        </div><!-- /.row -->
+      </div><!-- /.container-fluid -->
+    </div>
+    <!-- /.content-header -->
+
+    <!-- Select Filter -->
+    <div class="card m-4">
+        <div class="card-body">
+            <h6>Select the Date Range</h6>
+           
+            <form action="{% url 'custom_admin:sales-report-view'%}" method="get">
+                <div class="col-sm-6">
+                    <label for="sales_report_start_date">Start Date:</label><br>
+                    <input class="form-control" type="date" id="sales_report_start_date" name="SalesReportStartDate" required>
+                    <br>
+                    <label for="sales_report_end_date">End Date:</label><br>
+                    <input class="form-control" type="date" id="sales_report_end_date" name="SalesReportEndDate" required><br>
+                    <input class = "btn btn-primary" type="submit" name="Sales-Report" id="sales-report-submit-btn">
+                </div>
+            </form>
+            
+        </div>
+    </div>
+    <!-- /.Select Filter -->
+
+    <!-- Main content -->
+    <section class="content">
+        <div class="container-fluid">
+            <div class="container mt-2 mb-2">
+                <table id = 'sales-reports-table' class="table table-bordered" style="width: 100%">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>User</th>
+                            <th>Ordered Date</th>
+                            <th>Order Status</th>
+                            <th>Payment Type</th>
+                            <th>Coupon Used</th>
+                            <th>Total</th>
+                        </tr>
+                    </thead>
+                    <tfoot>
+                        <tr>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th>Discount: {{discount}}</th>
+                            <th>Total: {{order_total}}</th>
+                        </tr>
+                    </tfoot>
+                    <tbody>
+                        {%if order_list%}
+                        {%for order in order_list%}
+                            <tr>
+                                <td>{{order.id}}</td>
+                                <td>{{order.user.username}}</td>
+                                <td>{{order.created_at}}</td>
+                                <td>{{order.status}}</td>
+                                <td>{{order.payment_gateway}}</td>
+                                <td>{{order.coupon.code}}</td>
+                                <td>{{order.grand_total}}</td>
+                            </tr>
+                        {%endfor%}
+                        {%endif%}
+                    </tbody>
+                </table>
+            </div>
+        </div><!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->
+</div>
+  <!-- /.content-wrapper -->
+
+
+
+{% endblock main-content %}

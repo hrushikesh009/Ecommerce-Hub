@@ -1,0 +1,74 @@
+{% extends 'custom_admin/index.html' %}
+{% load static %}
+{% block title %}Contact Us{% endblock title %}
+{% block main-content %}
+
+
+{% block content %}
+{% endblock content %}
+
+<div class="content-wrapper">
+  <div class="container">
+    {% if messages %}
+    {% for message in messages %}
+        <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}">
+        {{ message }}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+    {% endfor %}
+    {% endif %}
+
+  </div>
+  
+    <div class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1 class="m-0 text-dark">Contact Us</h1>
+          </div><!-- /.col -->
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a href="#">Home</a></li>
+              <li class="breadcrumb-item active">Contact Us</li>
+            </ol>
+          </div><!-- /.col -->
+        </div><!-- /.row -->
+      </div><!-- /.container-fluid -->
+    </div>
+    <!-- /.content-header -->
+
+    <!-- Main content -->
+    <section class="content">
+      <div class="container-fluid">
+        <div class="container mt-2 mb-2">
+            <div class="card">
+              <div class="card-header">
+                <p><i class="mr-4 fa fa-user"></i><b>{{contact_us_detail.name}}</b></p>
+                <p><i class="mr-4 fa fa-envelope"></i><b>{{contact_us_detail.email}}</b></p>
+                <p><i class="mr-4 fa fa-phone"></i><b>{{contact_us_detail.contact_no}}</b></p>
+              </div>
+              <div class="card-body"></div>
+                <p class="mx-4">Message:</p>
+                <p class="mx-4">{{contact_us_detail.message}}</p>
+              </div>
+            </div>
+            <h4 class="m-4">Reply to the Customer:</h4>
+            <div class="continer m-4">
+              <form id="contact_us_email_to_customer" method="post" action="{% url 'custom_admin:contact-us-detail-view' contact_us_detail.id%}">
+                {%csrf_token%}
+                <label for="id_note">Note:</label>
+                <textarea name="note" cols="40" rows="8" placeholder="Write the Note for the Customer Here!" class="form-control" id="id_note" required></textarea><br>
+                <button type="submit" class="btn btn-primary">Send Mail</button>
+              </form>
+            </div>
+            
+          </div>
+        </div><!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->
+  </div>
+  <!-- /.content-wrapper -->
+
+{% endblock main-content %}

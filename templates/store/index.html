@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	{% load static %}
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>Home | E-Shopper | {% block title %}{% endblock title %}</title>
+    <link href="{% static 'store/css/bootstrap.min.css'%}" rel="stylesheet">
+    <link href="{% static 'store/css/font-awesome.min.css'%}" rel="stylesheet">
+    <link href="{% static 'store/css/prettyPhoto.css'%}" rel="stylesheet">
+    <link href="{% static 'store/css/price-range.css'%}" rel="stylesheet">
+    <link href="{% static 'store/css/animate.css' %}" rel="stylesheet">
+	<link href="{% static 'store/css/main.css'%}" rel="stylesheet">
+	<link href="{% static 'store/css/responsive.css'%}" rel="stylesheet">
+	<link rel="stylesheet" href="{% static 'custom_admin/css/main.css'%}">
+	<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+	<link rel="stylesheet" href="//code.jquery.com/ui/1.13.0/themes/base/jquery-ui.css">
+
+    <!--[if lt IE 9]>
+    <script src="js/html5shiv.js"></script>
+    <script src="js/respond.min.js"></script>
+    <![endif]-->       
+    <link rel="shortcut icon" href="{% static 'store/images/ico/favicon.ico'%}">
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="{% static 'store/images/ico/apple-touch-icon-144-precomposed.png'%}">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="{% static 'store/images/ico/apple-touch-icon-114-precomposed.png'%}">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="{% static 'store/images/ico/apple-touch-icon-72-precomposed.png'%}">
+    <link rel="apple-touch-icon-precomposed" href="{% static 'store/images/ico/apple-touch-icon-57-precomposed.png'%}">
+</head><!--/head-->
+
+<body>
+	<header id="header"><!--header-->
+		<div class="header_top"><!--header_top-->
+			<div class="container">
+				<div class="row">
+					<div class="col-sm-6">
+						<div class="contactinfo">
+							<ul class="nav nav-pills">
+								<li><a href="#"><i class="fa fa-phone"></i> +2 95 01 88 821</a></li>
+								<li><a href="#"><i class="fa fa-envelope"></i> info@domain.com</a></li>
+							</ul>
+						</div>
+					</div>
+					<div class="col-sm-6">
+						<div class="social-icons pull-right">
+							<ul class="nav navbar-nav">
+								<li><a href="#"><i class="fa fa-facebook"></i></a></li>
+								<li><a href="#"><i class="fa fa-twitter"></i></a></li>
+								<li><a href="#"><i class="fa fa-linkedin"></i></a></li>
+								<li><a href="#"><i class="fa fa-dribbble"></i></a></li>
+								<li><a href="#"><i class="fa fa-google-plus"></i></a></li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div><!--/header_top-->
+		
+		<div class="header-middle"><!--header-middle-->
+			<div class="container">
+				<div class="row">
+					<div class="col-sm-4">
+						<div class="logo pull-left">
+							<a href="{% url 'store:home-view'%}"><img src="{% static 'store/images/home/logo.png'%}" alt="" /></a>
+						</div>
+						
+					</div>
+					<div class="col-sm-8">
+						<div class="shop-menu pull-right">
+							<ul class="nav navbar-nav">
+								{%if request.user.is_anonymous%}
+								<li><a href="#"><i class="fa fa-user"></i> Account</a></li>
+								{%else%}
+								<li><a href="{% url 'store:myaccount-view'%}"><i class="fa fa-user"></i>Hii {{request.user.username}}</a></li>
+								{%endif%}
+								<li><a href="{%url 'store:wish-list-view' %}"><i class="fa fa-star"></i> Wishlist</a></li>
+								{%if not request.user.is_anonymous%}
+								<li><a href="{% url 'store:checkout-view' None %}"><i class="fa fa-crosshairs"></i> Checkout</a></li>
+								{%endif%}
+								
+								<li><a href="{% url 'store:cart-list-view'%}"><i class="fa fa-shopping-cart"></i> Cart</a></li>
+								{%if not request.user.is_anonymous%}
+								<li><a href="{% url 'store:order-view' %}"><i class="fa fa-crosshairs"></i> My Orders</a></li>
+								{%endif%}
+								{%if request.user.is_anonymous%}
+								<li><a href="{% url 'store:login-view' %}"><i class="fa fa-lock"></i> Login</a></li>
+								
+								{%else%}
+								<li><a href="{% url 'store:logout-view' %}"><i class="fa fa-lock"></i> Logout</a></li>
+								{%endif%}
+								
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div><!--/header-middle-->
+	
+		<div class="header-bottom"><!--header-bottom-->
+			<div class="container">
+				<div class="row">
+					<div class="col-sm-9">
+						<div class="navbar-header">
+							<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+								<span class="sr-only">Toggle navigation</span>
+								<span class="icon-bar"></span>
+								<span class="icon-bar"></span>
+								<span class="icon-bar"></span>
+							</button>
+						</div>
+						<div class="mainmenu pull-left">
+							<ul class="nav navbar-nav collapse navbar-collapse">
+								<li><a href="{% url 'store:home-view' %}" class="active">Home</a></li>
+								<li class="dropdown"><a href="#">Shop<i class="fa fa-angle-down"></i></a>
+                                    <ul role="menu" class="sub-menu">
+                                        <li><a href="{% url 'store:category-view' 'Mens' %}">Products</a></li>
+								        <li><a href="{% url 'store:order-view' %}">My Orders</a></li>
+
+										<li><a href="{% url 'store:checkout-view' None %}">Checkout</a></li> 
+										<li><a href="{% url 'store:cart-list-view'%}">Cart</a></li> 
+										<li><a href="{% url 'store:login-view' %}">Login</a></li> 
+                                    </ul>
+                                </li> 
+								<li class="dropdown"><a href="#">Blog<i class="fa fa-angle-down"></i></a>
+                                    <ul role="menu" class="sub-menu">
+                                        <li><a href="blog.html">Blog List</a></li>
+										<li><a href="blog-single.html">Blog Single</a></li>
+                                    </ul>
+                                </li> 
+								<li><a href="{% url 'store:contact-us-view' %}">Contact</a></li>
+								<li class="dropdown"><a href="#">Flatpage<i class="fa fa-angle-down"></i></a>
+									{% load flatpages %}
+									{% get_flatpages as flatpages%}
+                                    <ul role="menu" class="sub-menu">
+										{% for page in flatpages%}
+										{%if page.cms.active%}
+										<li><a href="{{page.url}}">{{page.title}}</a></li>
+										{%else%}
+										{%endif%}
+										{%endfor%}
+                                        
+                                    </ul>
+                                </li>
+							</ul>
+						</div>
+					</div>
+					<div class="col-sm-3">
+						<div class="search_box pull-right">
+							<input type="text" placeholder="Search"/>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div><!--/header-bottom-->
+	</header><!--/header-->
+    
+	{%for msg in messages%}
+	<div class="container">
+		<h4 class="alert-heading">Welcome !</h4>
+		<p>{{msg}}
+			<button type="button" class="close p2 " data-dismiss="alert" aria-label="Close">
+				<span aria-hidden="true">&times;</span>
+			</button>
+		</p>
+		<hr>
+	</div>
+	{%endfor%}
+
+	{% block banner_slider %} {% endblock banner_slider %}
+
+	<section>
+		<div class="container">
+			<div class="row">
+
+			{% block side_bar_category %}{%endblock side_bar_category%}
+
+			{% block main_content%}{% endblock main_content%}
+
+			{% block recommended-items%}{% endblock recommended-items%}
+			
+			</div>
+		</div>
+	</section>
+
+	
+	<footer id="footer"><!--Footer-->
+		<div class="footer-top">
+			<div class="container">
+				<div class="row">
+					<div class="col-sm-2">
+						<div class="companyinfo">
+							<h2><span>e</span>-shopper</h2>
+							<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit,sed do eiusmod tempor</p>
+						</div>
+					</div>
+					<div class="col-sm-7">
+						<div class="col-sm-3">
+							<div class="video-gallery text-center">
+								<a href="#">
+									<div class="iframe-img">
+										<img src="{% static 'store/images/home/iframe1.png'%}" alt="" />
+									</div>
+									<div class="overlay-icon">
+										<i class="fa fa-play-circle-o"></i>
+									</div>
+								</a>
+								<p>Circle of Hands</p>
+								<h2>24 DEC 2014</h2>
+							</div>
+						</div>
+						
+						<div class="col-sm-3">
+							<div class="video-gallery text-center">
+								<a href="#">
+									<div class="iframe-img">
+										<img src="{% static 'store/images/home/iframe2.png'%}" alt="" />
+									</div>
+									<div class="overlay-icon">
+										<i class="fa fa-play-circle-o"></i>
+									</div>
+								</a>
+								<p>Circle of Hands</p>
+								<h2>24 DEC 2014</h2>
+							</div>
+						</div>
+						
+						<div class="col-sm-3">
+							<div class="video-gallery text-center">
+								<a href="#">
+									<div class="iframe-img">
+										<img src="{% static 'store/images/home/iframe3.png'%}" alt="" />
+									</div>
+									<div class="overlay-icon">
+										<i class="fa fa-play-circle-o"></i>
+									</div>
+								</a>
+								<p>Circle of Hands</p>
+								<h2>24 DEC 2014</h2>
+							</div>
+						</div>
+						
+						<div class="col-sm-3">
+							<div class="video-gallery text-center">
+								<a href="#">
+									<div class="iframe-img">
+										<img src="{% static 'store/images/home/iframe4.png'%}" alt="" />
+									</div>
+									<div class="overlay-icon">
+										<i class="fa fa-play-circle-o"></i>
+									</div>
+								</a>
+								<p>Circle of Hands</p>
+								<h2>24 DEC 2014</h2>
+							</div>
+						</div>
+					</div>
+					<div class="col-sm-3">
+						<div class="address">
+							<img src="{% static 'store/images/home/map.png'%}" alt="" />
+							<p>505 S Atlantic Ave Virginia Beach, VA(Virginia)</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<div class="footer-widget">
+			<div class="container">
+				<div class="row">
+					<div class="col-sm-2">
+						<div class="single-widget">
+							<h2>Service</h2>
+							<ul class="nav nav-pills nav-stacked">
+								<li><a href="#">Online Help</a></li>
+								<li><a href="#">Contact Us</a></li>
+								<li><a href="#">Order Status</a></li>
+								<li><a href="#">Change Location</a></li>
+								<li><a href="#">FAQ’s</a></li>
+							</ul>
+						</div>
+					</div>
+					<div class="col-sm-2">
+						<div class="single-widget">
+							<h2>Quock Shop</h2>
+							<ul class="nav nav-pills nav-stacked">
+								<li><a href="#">T-Shirt</a></li>
+								<li><a href="#">Mens</a></li>
+								<li><a href="#">Womens</a></li>
+								<li><a href="#">Gift Cards</a></li>
+								<li><a href="#">Shoes</a></li>
+							</ul>
+						</div>
+					</div>
+					<div class="col-sm-2">
+						<div class="single-widget">
+							<h2>Policies</h2>
+							<ul class="nav nav-pills nav-stacked">
+								<li><a href="#">Terms of Use</a></li>
+								<li><a href="#">Privecy Policy</a></li>
+								<li><a href="#">Refund Policy</a></li>
+								<li><a href="#">Billing System</a></li>
+								<li><a href="#">Ticket System</a></li>
+							</ul>
+						</div>
+					</div>
+					<div class="col-sm-2">
+						<div class="single-widget">
+							<h2>About Shopper</h2>
+							<ul class="nav nav-pills nav-stacked">
+								<li><a href="#">Company Information</a></li>
+								<li><a href="#">Careers</a></li>
+								<li><a href="#">Store Location</a></li>
+								<li><a href="#">Affillate Program</a></li>
+								<li><a href="#">Copyright</a></li>
+							</ul>
+						</div>
+					</div>
+					<div class="col-sm-3 col-sm-offset-1">
+						<div class="single-widget">
+							<h2>About Shopper</h2>
+							<form action="{% url 'store:subscribe-newsletter-view' %}" method="post" class="searchform">
+								{%csrf_token%}
+								<input style = "color: black; "type="email" id ="subscribe-newsletter" placeholder="Your email address" name="subscribenewsletter" required/>
+								<button type="submit" class="btn btn-default"><i class="fa fa-arrow-circle-o-right"></i></button>
+								<p>Get the most recent updates from <br />our site and be updated your self...</p>
+							</form>
+						</div>
+					</div>
+					
+				</div>
+			</div>
+		</div>
+		
+		<div class="footer-bottom">
+			<div class="container">
+				<div class="row">
+					<p class="pull-left">Copyright © 2013 E-SHOPPER Inc. All rights reserved.</p>
+					<p class="pull-right">Designed by <span><a target="_blank" href="http://www.themeum.com">Themeum</a></span></p>
+				</div>
+			</div>
+		</div>
+		
+	</footer><!--/Footer-->
+	
+
+  
+    <script src="{% static 'store/js/jquery.js'%}"></script>
+	<script src="{% static 'store/js/bootstrap.min.js'%}"></script>
+	<script src="{% static 'store/js/jquery.scrollUp.min.js'%}"></script>
+	<!-- <script src="{% static 'store/js/price-range.js'%}"></script> -->
+    <script src="{% static 'store/js/jquery.prettyPhoto.js'%}"></script>
+    <script src="{% static 'store/js/main.js'%}"></script>
+    <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+	<script src="https://www.paypal.com/sdk/js?client-id=AU3cdLCm8KJXvFa1yflTDl9r-Eoo5jpb8QjAHDXjQfRrkDDrnzPp3NVwfHAsMqY1ckZObK3XlDgtI0df&currency=USD"></script>
+	<!-- <script src="{% static 'store/js/contact.js'%}"></script>
+	<script src="{% static 'store/js/gmaps.js'%}"></script> -->
+	<script>
+
+		$(document).ready(function(){
+			$('.carousel').carousel();
+
+			$('#id_country').select2();
+
+			$( function() {
+				$( "#slider-range" ).slider({
+				range: true,
+				min: 0,
+				max: 1000,
+				values: [ 75, 300 ],
+				slide: function( event, ui ) {
+					$( "#amount" ).val( "$" + ui.values[ 0 ] + " - $" + ui.values[ 1 ] );
+				}
+				});
+				$( "#amount" ).val( "$" + $( "#slider-range" ).slider( "values", 0 ) +
+				" - $" + $( "#slider-range" ).slider( "values", 1 ) );
+			} );
+
+		
+			$('#price-range-btn').click(function(){
+				var min = $('#slider-range').slider("values")[0]
+				var max = $('#slider-range').slider("values")[1]
+				$.ajax({
+						url:".",
+						method:"GET",
+						data:{
+						'min':min,
+						'max':max,
+						},
+						success:function(response){
+							window.location = response.url
+							
+						}
+					})
+
+			})
+
+
+			$('button[id="wishlist-button"]').click(function(){
+				if(confirm("Are you sure you want to delete?"))
+				{
+				var value = $(this).val();
+				var name = $('button[id="wishlist-button"]').attr('name');
+				var csrf = $('input[name=csrfmiddlewaretoken]').val();
+				$.ajax({
+						url:"/store/wishlist/"+ value +"/delete/",
+						method:"POST",
+						data:{
+						'name':name,
+						'value':value,
+						'csrfmiddlewaretoken': csrf,
+						},
+						success:function(response){
+						location.reload();
+						}
+					})
+				}
+			})
+
+			$('button[id="del_address"]').click(function(){
+					if(confirm("Are you sure you want to delete?"))
+					{
+					var value = $(this).val();
+					var name = $('button[id="del_address"]').attr('name');
+					var csrf = $('input[name=csrfmiddlewaretoken]').val();
+					$.ajax({
+							url:"/store/address/"+ value +"/delete/",
+							method:"POST",
+							data:{
+							'name':name,
+							'value':value,
+							'csrfmiddlewaretoken': csrf,
+							},
+							success:function(response){
+							location.reload();
+							}
+						})
+					}
+				})
+
+			$('#fill_address').change(function(){
+				if (this.checked){
+					$("#address-form").removeAttr('style');
+				}
+				else{
+					$("#address-form").css('display','none');
+					
+				}
+				
+			})
+
+			$("[id='address-radio-btn']").click(function(){
+				if (this.checked) {
+					$("#checkbox-address").css('display','none');
+					$("#address-form").css('display','none');
+					$("#fill_address").removeAttr('checked');
+
+				}
+				else{
+					$("#checkbox-address").removeAttr('style');
+					$("#address-form").removeAttr('style');
+				}
+			})
+
+			$("[id='cart_quantity_input']").change(function(){
+				value = $(this).val();
+				id = $(this).attr('name');
+				$.ajax({
+						url:"?",
+							method:"GET",
+							data:{
+							'value':value,
+							'cart_id':id,
+							'name':'cart_quantity_changed'
+							},
+							success:function(response){
+								location.reload();
+							}
+						})
+			})
+
+			$("[id='plus_cart']").click(function(){
+				value = $(this).attr('name');
+				console.log(value)
+				$.ajax({
+						url:"?",
+							method:"GET",
+							data:{
+							'cart_id':value,
+							'name':'plus_cart'
+							},
+							success:function(response){
+								location.reload();
+
+							}
+						})
+			})
+
+			$("[id='minus_cart']").click(function(){
+				value = $(this).attr('name');
+				console.log(value)
+				$.ajax({
+						url:"?",
+							method:"GET",
+							data:{
+							'cart_id':value,
+							'name':'minus_cart'
+							},
+							success:function(response){
+								location.reload();
+
+							}
+						})
+			})
+			paypal.Buttons({
+
+			createOrder: function(data, actions) {
+			return actions.order.create({
+				purchase_units: [{
+				amount: {
+					value: '{{order_detail.grand_total}}'
+				}
+				}]
+			});
+			},
+
+
+			onApprove: function(data, actions) {
+			return actions.order.capture().then(function(orderData) {
+				var transaction = orderData.purchase_units[0].payments.captures[0]['id'];
+				var csrf = $('input[name=csrfmiddlewaretoken]').val();
+
+				$.ajax({
+						url: "/store/payment/"+ "{{order_detail.id}}" +"/",
+						method:"POST",
+						data:{
+						'transaction':transaction,
+						'csrfmiddlewaretoken': csrf,
+						},
+						success:function(response){
+							if(response.status == 1){
+								window.location = response.url
+								alert('Your Order was Placed Successfully')
+							}
+							else{
+								window.location = response.url
+								alert('Some Error Happen While Processing Your Order!')
+
+							}
+						}
+					})
+			});
+			}
+			}).render('#paypal-button-container');
+
+})
+			
+</script>
+</body>
+</html>

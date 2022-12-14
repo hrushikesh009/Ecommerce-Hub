@@ -1,0 +1,95 @@
+{% extends 'store/home.html' %}
+{% load static %}
+{% block title %}Category| Products{% endblock title %}
+
+{% block banner_slider %} 
+<section id="advertisement">
+	<div class="container">
+		<img src="{% static '/store/images/shop/advertisement.jpg' %}" alt="" />
+	</div>
+</section>
+{% endblock banner_slider %}
+
+{% block main_content%}
+				
+				<div class="col-sm-9 padding-right">
+					<div class="features_items"><!--features_items-->
+						<h2 class="title text-center">Features Items</h2>
+						{%if product_list%}
+						{%for product in product_list%}
+						{%if product.active%}
+						<div class="col-sm-4">
+							<div class="product-image-wrapper">
+								<div class="single-products">
+										<div class="productinfo text-center">
+											{%if product.images_set.first%}
+											<img src="{{product.images_set.first.image.url}}" alt="{{product.title}}" />
+											{%else%}
+											<img src="{% static 'images/default-picture.png'%}" alt="default-picture" />
+											{%endif%}
+											{%if product.check_if_special_price%}
+											<h2>$ <del style="color: red;">{{product.price}}</del> {{product.special_price}}</h2>
+											{%else%}
+											<h2>US ${{product.price}}</h2>
+											{%endif%}
+											<p>{{product.title}}</p>
+											<a href="" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</a>
+										</div>
+										<div class="product-overlay">
+											<div class="overlay-content">
+												{%if product.check_if_special_price%}
+												<h2>$ <del style="color: red;">{{product.price}}</del> {{product.special_price}}</h2>
+												{%else%}
+												<h2>US ${{product.price}}</h2>
+												{%endif%}
+												<p>{{product.title}}</p>
+												
+												<a href="{% url 'store:product-detail-view' product.id %}" class="btn btn-default add-to-cart"><i class="fa fa-eye"></i>View</a>
+											</div>
+										</div>
+								</div>
+								<div class="choose">
+									<ul class="nav nav-pills nav-justified">
+										<li><a href="{% url 'store:wish-list-add-view' product.id %}"><i class="fa fa-plus-square"></i>Add to wishlist</a></li>
+										<li><a href="#"><i class="fa fa-plus-square"></i>Add to compare</a></li>
+									</ul>
+								</div>
+							</div>
+						</div>
+						{%else%}
+						{%endif%}
+						{%endfor%}
+						{%else%}
+						<p style="text-align: center; margin: 10px;">No Products to Display !</p>
+						{%endif%}
+						
+						
+					</div><!--features_items-->
+					<ul class="pagination">
+						{%if product_list.has_previous%}
+						<li ><a href="?page=1">&laquo First</a></li>
+						<li class="active"><a href="?page={{product_list.previous_page_number}}">Prev</a></li>
+						{%else%}
+						<li class = "disabled"><a href="?page=#">&laquo First</a></li>
+						{%endif%}
+						{%for i in page_nums%}
+						<li ><a href="?page={{forloop.counter}}">{{forloop.counter}}</a></li>
+						{%endfor%}
+						
+						{%if product_list.has_next%}
+						<li ><a href="?page={{product_list.next_page_number}}">Next</a></li>
+						<li class="active"><a href="?page={{product_list.paginator.num_pages}}">Last</a></li>
+						{%else%}
+						<li class = "disabled"><a href="?page=#">Next &raquo </a></li>
+						{%endif%}
+					</ul>
+				</div>
+			</div>
+		</div>
+	</section>
+
+{% endblock main_content%}
+{%block recommended-items%}
+{%endblock recommended-items%}
+	
+	

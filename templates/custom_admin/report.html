@@ -1,0 +1,76 @@
+{% extends 'custom_admin/index.html' %}
+{% load static %}
+{% block title %}Reports{% endblock title %}
+{% block main-content %}
+
+
+{% block content %}
+{% endblock content %}
+
+<div class="content-wrapper">
+    <div class="container">
+        {% if messages %}
+        {% for message in messages %}
+            <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}">
+            {{ message }}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        {% endfor %}
+        {% endif %}
+    </div>
+  
+    <div class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1 class="m-0 text-dark">Report</h1>
+          </div><!-- /.col -->
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a href="{% url 'custom_admin:admin-home-view' %}">Home</a></li>
+              <li class="breadcrumb-item active">Reports</li>
+            </ol>
+          </div><!-- /.col -->
+        </div><!-- /.row -->
+      </div><!-- /.container-fluid -->
+    </div>
+    <!-- /.content-header -->
+
+    <!-- Select Filter -->
+    <div class="card m-4">
+        <div class="card-header">
+            <h6 class="title"><i class="fa fa-bar-chart"></i> Choose the report type</h6>
+        </div>
+        <div class="card-body">
+                {% csrf_token %}
+            <div class="input-group mb-3">
+                <select name="report" id="report" class="form-control">
+                    <option value="Customer Registered">Customer Registered</option>
+                    <option value="Coupons Used">Coupons Used</option>
+                </select>
+                <div class="input-group-append">
+                    <span class="form-control"><i class="fa fa-filter"></i>Filter</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /.Select Filter -->
+
+    <!-- Main content -->
+    <section class="content">
+        <div class="container-fluid">
+            <div class="container mt-2 mb-2">
+                <table id = 'reports-table' class="table table-bordered" style="width: 100%">
+                </table>
+            </div>
+        </div><!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->
+</div>
+  <!-- /.content-wrapper -->
+
+
+
+{% endblock main-content %}

@@ -1,0 +1,93 @@
+{% extends 'store/index.html' %}
+{% load static %}
+{% block title %}My Order{% endblock title %}
+{% block main_content %}
+
+<section id="my-order">
+	<div class="container">
+		<div class="breadcrumbs">
+			<ol class="breadcrumb">
+				<li><a href="{% url 'store:home-view'%}">Home</a></li>
+				<li class="active">My Orders </li>
+			</ol>
+		</div><!--/breadcrums-->
+        <div class="row">
+            <div class="col-sm-9">
+                <div class="step-one">
+                    <h2 class="heading">My Orders</h2>
+                </div>
+                <section id="cart_items">
+                        {% if orders%}
+                        {%for order_detail in orders%}
+                        <h5 style="color: gray;">Order ID: {{order_detail.id}}</h5>
+                        <div class="table-responsive cart_info">
+                            <table class="table table-condensed">
+                                <thead>
+                                    <tr class="cart_menu">
+                                        <td class="image">Product</td>
+                                        <td class="description">Title</td>
+                                        <td class="price">Price</td>
+                                        <td class="quantity">Quantity</td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {%for items in order_detail.orderitem_set.all%}
+                                    <tr>
+                                        <td class="cart_product">
+                                            <a href="">
+                                                {%if items.product.images_set.first%}
+                                                <img src="{{items.product.images_set.first.image.url}}"  style="width: 30%; height: 30%;" alt="{{items.product.title}}" />
+                                                {%else%}
+                                                <img src="{% static 'images/default-picture.png'%}" alt="default-picture" />
+                                                {%endif%}
+                                                
+                                            </a>
+                                        </td>
+                                        <td class="cart_description">
+                                            <h4><a href="">{{items.product.title}}</a></h4>
+                                            <p>Web ID: 1089772</p>
+                                        </td>
+                                        <td class="cart_price">
+                                            <p>{{items.unit_price}}</p>
+                                        </td>
+                                        <td class="cart_quantity">
+                                            <p>{{items.quantity}}</p>
+                                        </td>
+                                    </tr>
+                                    {%endfor%}
+                                    <tr>
+                                        <td colspan="3" class="text-right">Payment Type:</td>
+                                        <td class="text-align">{{order_detail.payment_gateway.name}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="3" class="text-right">Order Status:</td>
+                                        <td class="text-left">{{order_detail.status}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        {%endfor%}
+                        {%else%}
+                        <p>You Seems to have Not Placed any Orders Yet!</p>
+                        {%endif%}
+                            
+                </section>
+            </div>
+            <div class="col-sm-3">
+                <div class="list-group">
+                    <a href="{% url 'store:myaccount-view' %}" class="list-group-item">MyAccount</a>
+                    <a href="{% url 'store:password-change-view' %}" class="list-group-item">Change Password</a>
+                    <a href="{% url 'store:address-view' %}" class="list-group-item">Address Book</a>
+                    <a href="{% url 'store:order-view' %}" class="list-group-item">My Orders</a>
+                    <a href="{% url 'store:track-order-view' %}" class="list-group-item">Track My Orders</a>
+
+                </div>
+            </div>
+        </div>
+		
+    </div>
+</section>
+
+{% endblock main_content %}
+	
+	

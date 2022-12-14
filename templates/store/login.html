@@ -1,0 +1,85 @@
+{% extends 'store/index.html' %}
+{% load static %}
+{% block title %}Login{% endblock title %}
+{% block main_content %}
+<section id="form"><!--form-->
+	<div class="container">
+		<div class="row">
+			<div class="col-sm-4 col-sm-offset-1">
+				<div class="login-form"><!--login form-->
+					<h2>Login to your account</h2>
+					{% if loginform.errors and not loginform.non_field_errors %}
+					<p class="alert alert-danger">
+						{% if loginform.errors.items|length == 1 %}
+						Please correct the error below.
+						{%else%}
+						Please correct the error below.
+						{% endif %}
+					</p>
+					{% endif %}
+					{% if loginform.non_field_errors %}
+					{% for error in loginform.non_field_errors %}
+						<p class="alert alert-danger">
+							{{ error }}
+						</p>
+					{% endfor %}
+					{% endif %}
+					<form action="" method="post" novalidate>
+						{%csrf_token%}
+						{{loginform.username}}
+						{{loginform.username.errors}}
+						{{loginform.password}}
+						{{loginform.password.errors}}
+						<a href="{%url 'store:reset-password'%}">Forgot Password?</a>
+						<button type="submit" name='Login' class="btn btn-default">Login</button>
+					</form>
+				</div><!--/login form-->
+			</div>
+			<div class="col-sm-1">
+				<h2 class="or">OR</h2>
+			</div>
+			<div class="col-sm-4">
+				<div class="signup-form"><!--sign up form-->
+					<h2>New User Signup!</h2>
+					{% if signupform.errors and not signupform.non_field_errors %}
+					<p class="alert alert-danger">
+						{% if signupform.errors.items|length == 1 %}
+						Please correct the error below.
+						{%else%}
+						Please correct the error below.
+						{% endif %}
+					</p>
+					{% endif %}
+					{% if signupform.non_field_errors %}
+					{% for error in signupform.non_field_errors %}
+						<p class="alert alert-danger">
+							{{ error }}
+						</p>
+					{% endfor %}
+					{% endif %}
+					
+					<form action="" method="post" novalidate>
+						{%csrf_token%}
+						{{signupform.username}}
+						{{signupform.username.errors}}
+						{{signupform.email}}
+						{{signupform.email.errors}}
+						{{signupform.password1}}
+						{{signupform.password1.errors}}
+						{{signupform.password2}}
+						{{signupform.password2.errors}}
+						<button type="submit" name='Signup' class="btn btn-default">Signup</button>
+						
+							<a class="mx-4 btn btn-primary " href="{% url 'social:begin' 'facebook' %}">Facebook</a>
+							<a class="mx-4 btn btn-primary"  href="{% url 'social:begin' 'google-oauth2' %}">Google</a>
+							<a class="mx-4 btn btn-primary " href="{% url 'social:begin' 'twitter' %}">Twitter</a>
+
+					</form>
+				</div><!--/sign up form-->
+			</div>
+		</div>
+	</div>
+</section><!--/form-->
+{% endblock main_content %}
+	
+	

@@ -1,0 +1,31 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+django = "*"
+django-debug-toolbar = "*"
+mysqlclient = "*"
+python-dotenv = "*"
+djangorestframework = "*"
+drf-nested-routers = "*"
+django-filter = "*"
+django-jazzmin = "*"
+pillow = "*"
+django-countries = "*"
+django-adminlte-3 = "*"
+social-auth-app-django = "*"
+django-crontab = "*"
+django-froala-editor = "*"
+mailchimp-marketing = "*"
+pep8 = "*"
+pylint = "*"
+pylint-django = "*"
+tzdata = "*"
+
+[dev-packages]
+autopep8 = "*"
+
+[requires]
+python_version = "3.8"

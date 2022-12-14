@@ -1,0 +1,132 @@
+{% extends 'store/index.html' %}
+{% load static %}
+{% block title %}MyCart{% endblock title %}
+
+{% block main_content%}
+
+	<section id="cart_items">
+		<div class="container">
+			<div class="breadcrumbs">
+				<ol class="breadcrumb">
+				  <li><a href="{% url 'store:home-view' %}">Home</a></li>
+				  <li class="active">Shopping Cart</li>
+				</ol>
+			</div>
+			<div class="table-responsive cart_info">
+				<table class="table table-condensed">
+					<thead>
+						<tr class="cart_menu">
+							<td class="image">Item</td>
+							<td class="description"></td>
+							<td class="price">Price</td>
+							<td class="quantity">Quantity</td>
+							<td class="total">Total</td>
+							<td></td>
+						</tr>
+					</thead>
+					<tbody>
+						{% if cart_detail.items.first %}
+						{% for items in cart_detail.items.all %}
+						<tr>
+							<td class="cart_product">
+								<a href="">
+									{%if items.product.images_set.first%}
+									<img src="{{items.product.images_set.first.image.url}}" alt="{{items.product.title}}" />
+									{%else%}
+									<img src="{% static 'images/default-picture.png'%}" alt="default-picture" />
+									{%endif%}
+								</a>
+							</td>
+							<td class="cart_description">
+								<h4><a href="">{{items.product.title}}</a></h4>
+								<p>Web ID: 1089772</p>
+							</td>
+							<td class="cart_price">
+								<p>{{items.unit_price}}</p>
+							</td>
+							<td class="cart_quantity">
+								<div class="cart_quantity_button">
+									<a class="cart_quantity_up" id="plus_cart" name = "{{items.id}}" href=""> + </a>
+									<input class="cart_quantity_input" id = "cart_quantity_input" type="text" name="{{items.id}}" value="{{items.quantity}}" autocomplete="off" size="2">
+									<a class="cart_quantity_down" id="minus_cart" name = "{{items.id}}" href=""> - </a>
+								</div>
+							</td>
+							<td class="cart_total">
+								<p class="cart_total_price">{{items.total}}</p>
+							</td>
+							<td class="cart_delete">
+								<form method ="POST" action="{% url 'store:cart-delete-view' items.id %}">
+								{%csrf_token%}
+								<button class="btn btn-primary" type ="submit" name="cart-delete" id ="cart-item-delete" value="{{items.id}}"><i class="fa fa-times"></i></button>
+							    </form>
+							
+							</td>
+						</tr>
+						{%endfor%}
+						{%else%}
+						<tr>
+							<td style="text-align: center;">No Product in the Cart use add cart Button to add the Product :)</td>
+						</tr>
+                        {%endif%}
+
+						
+						
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</section> <!--/#cart_items-->
+
+	<section id="do_action">
+		<div class="container">
+			<div class="heading">
+				<h3>What would you like to do next?</h3>
+				<p>Choose if you have a discount code or reward points you want to use or would like to estimate your delivery cost.</p>
+			</div>
+			<div class="row">
+				<div class="col-sm-6">
+					<div class="chose_area">
+						<form  action="?" method="get">
+							<ul class="user_option">
+								<li>
+									<label>Use Coupon Code:</label>
+									<br>
+									<input type="text" id="apply_coupon" class="form-control" name="coupon_code">
+								</li>
+								<li>
+									<input type="checkbox">
+									<label>Use Gift Voucher</label>
+								</li>
+								<li>
+									<input type="checkbox">
+									<label>Estimate Shipping & Taxes</label>
+								</li>
+							</ul>
+							<input type="submit" style = "margin-left: 30px;"class="btn btn-primary" value="Apply">
+					    </form>
+						
+					</div>
+				</div>
+				<div class="col-sm-6">
+					<div class="total_area">
+						<ul>
+							<li>Cart Sub Total <span>${{cart_detail.total_price}}</span></li>
+							{%if cart_detail.total_price >= 500 %}
+							<li>Shipping Cost <span>Free</span></li>
+							{%else%}
+							<li>Shipping Cost <span>$50</span></li>
+							{%endif%}
+							{%if coupon%}
+							<li>Coupon Apply: {{coupon.code}}<span>{{coupon.percent_off}}%OFF</span></li>
+							{%else%}
+							{%endif%}
+							<li>Total <span>${{total}}</span></li>
+						</ul>
+							<a class="btn btn-default check_out" href="{% url 'store:checkout-view' coupon %}">Check Out</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section><!--/#do_action-->
+
+{% endblock main_content%}

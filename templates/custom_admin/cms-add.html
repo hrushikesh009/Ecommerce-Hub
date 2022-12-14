@@ -1,0 +1,61 @@
+{% extends 'custom_admin/index.html' %}
+{% load static %}
+{% block title %}CMS{% endblock title %}
+{% block main-content %}
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <div class="container">
+        {% if messages %}
+        {% for message in messages %}
+            <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}">
+            {{ message }}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+            </div>
+        {% endfor %}
+        {% endif %}
+    </div>
+    
+    <div class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1 class="m-0 text-dark">CMS</h1>
+          </div><!-- /.col -->
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a href="{% url 'custom_admin:admin-home-view' %}">Home</a></li>
+              <li class="breadcrumb-item active">CMS</li>
+            </ol>
+          </div><!-- /.col -->
+        </div><!-- /.row -->
+      </div><!-- /.container-fluid -->
+    </div>
+    <!-- /.content-header -->
+
+    <!-- Main content -->
+    <section class="content">
+      <div class="container-fluid">
+        <!-- Small boxes (Stat box) -->
+        <div class="card ">
+            <div class="form-group mx-4 mt-4 mb-4">
+                <form action="" method ="post">
+                    {% csrf_token %}
+                    {{form.media}}
+                    {{form.as_p}}
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                
+                </form>
+            </div>
+        </div>
+        
+        
+      </div><!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->
+  </div>
+  <!-- /.content-wrapper -->
+ 
+{% endblock main-content %}

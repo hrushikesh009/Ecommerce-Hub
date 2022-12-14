@@ -1,0 +1,153 @@
+{% extends 'store/home.html' %}
+{% load static %}
+{% block title %}Product Details{% endblock title %}
+
+{% block banner_slider %} {% endblock banner_slider %}
+
+{% block main_content%}
+<div class="col-sm-9 padding-right">
+<div class="product-details"><!--product-details-->
+	<div class="col-sm-5">
+		<div class="view-product" >
+			{%if product.images_set.first%}
+			<img src="{{product.images_set.first.image.url}}" alt="{{product.title}}" />
+			{%else%}
+			<img src="{% static 'images/default-picture.png'%}" alt="default-picture" />
+			{%endif%}
+			<h3>ZOOM</h3>
+		</div>
+		<div id="similar-product" class="carousel slide" data-ride="carousel">
+								
+			<!-- Wrapper for slides -->
+			  <div class="carousel-inner">
+				  <div class="item active" style="height: 100px;">
+					<a href=""><img style = "max-height: 90%;" src="{{product.images_set.first.image.url}}" alt=""></a>
+				  </div>
+				  
+				  {%for img in product.images_set.all%}
+				  {%if img.active%}
+				  <div class="item" style="height: 100px;">
+					<a href=""><img style = "max-height: 90%;" src="{{img.image.url}}" alt=""></a>
+				  </div>
+				  {%else%}
+				  {%endif%}
+				  {%endfor%}
+				  
+			  </div>
+
+			<!-- Controls -->
+			<a class="left item-control" href="#similar-product" data-slide="prev">
+			  <i class="fa fa-angle-left"></i>
+			</a>
+			<a class="right item-control" href="#similar-product" data-slide="next">
+			  <i class="fa fa-angle-right"></i>
+			</a>
+	  </div>
+
+	</div>
+	<div class="col-sm-7">
+		<div class="product-information"><!--/product-information-->
+			<img src="{% static 'store/images/product-details/new.jpg'%}" class="newarrival" alt="" />
+			<h2>{{product.title}}</h2>
+			<p>Web ID: 1089772</p>
+			<img src="{% static 'store/images/product-details/rating.png'%}" alt="" /><br>
+			<span>
+				{%if product.check_if_special_price%}
+				<span>US $ <del style="color: red;">{{product.price}}</del> {{product.special_price}}</span><br>
+				{%else%}
+				<span>US ${{product.price}}</span><br><br><br>
+				{%endif%}
+				<hr>
+				<form method="POST" action="{% url 'store:cart-add-view' product.id %}">
+					{%csrf_token%}
+					<label for="Quantity">Quantity:</label>
+					<input type="text" name="Quantity" value="3" >
+					<hr>
+					{%load custom_template%}
+					{%for name in product.get_attribute_name%}
+					    <label for="{{name}}">Choose a {{name}}:</label>
+						
+						<select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" id="{{name}}_id" name="{{name}}">
+							{%for v in name|get_attribute_values:product.id%}
+							<option>{{v.product_attribute_value.attribute_value}}</option>
+							{%endfor%}
+						</select>
+					{%endfor%}
+					<hr>
+					{% if product.check_inventory %}
+					<button type="submit" class="btn btn-fefault cart" disabled>
+						<i class="fa fa-shopping-cart"></i>
+						Add to cart
+					</button>
+					{%else%}
+					<button type="submit" class="btn btn-fefault cart">
+						<i class="fa fa-shopping-cart"></i>
+						Add to cart
+					</button>
+					{%endif%}
+					
+				</form>
+			    
+			</span>
+			<p><b>Availability:</b> {% if product.check_inventory %}Out Stock{%else%}In Stock{%endif%}</p>
+			<p><b>Condition:</b> New</p>
+			<p><b>Brand:</b> E-SHOPPER</p>
+			<a href=""><img src="{% static 'store/images/product-details/share.png'%}" class="share img-responsive"  alt="" /></a>
+		</div><!--/product-information-->
+	</div>
+</div><!--/product-details-->
+
+<div class="category-tab shop-details-tab"><!--category-tab-->
+	<div class="col-sm-12">
+		<ul class="nav nav-tabs">
+			<li class="active"><a href="#details" data-toggle="tab">Details</a></li>
+			<li><a href="#companyprofile" data-toggle="tab">Company Profile</a></li>
+			<li><a href="#tag" data-toggle="tab">Tag</a></li>
+			<li ><a href="#reviews" data-toggle="tab">Reviews (5)</a></li>
+		</ul>
+	</div>
+	<div class="tab-content">
+		<div class="tab-pane fade active in" id="details" >
+			<div class="col-sm-12">
+				<!-- <div class="container"> -->
+					{{product.long_description|safe}}
+				<!-- </div> -->
+			</div>
+
+		</div>
+		
+		<div class="tab-pane fade" id="companyprofile" >
+			
+		</div>
+		
+		<div class="tab-pane fade" id="tag" >
+		</div>
+		
+		<div class="tab-pane fade" id="reviews" >
+			<div class="col-sm-12">
+				<ul>
+					<li><a href=""><i class="fa fa-user"></i>EUGEN</a></li>
+					<li><a href=""><i class="fa fa-clock-o"></i>12:41 PM</a></li>
+					<li><a href=""><i class="fa fa-calendar-o"></i>31 DEC 2014</a></li>
+				</ul>
+				<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
+				<p><b>Write Your Review</b></p>
+				
+				<form action="#">
+					<span>
+						<input type="text" placeholder="Your Name"/>
+						<input type="email" placeholder="Email Address"/>
+					</span>
+					<textarea name="" ></textarea>
+					<b>Rating: </b> <img src="images/product-details/rating.png" alt="" />
+					<button type="button" class="btn btn-default pull-right">
+						Submit
+					</button>
+				</form>
+			</div>
+		</div>
+		
+	</div>
+</div><!--/category-tab-->
+{% endblock main_content%}
+

@@ -1,0 +1,93 @@
+{% extends 'custom_admin/index.html' %}
+{% load static %}
+{% block title %}User{% endblock title %}
+{% block main-content %}
+
+
+{% block content %}
+{% endblock content %}
+
+<div class="content-wrapper">
+  <div class="container">
+    {% if messages %}
+    {% for message in messages %}
+        <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}">
+        {{ message }}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+    {% endfor %}
+    {% endif %}
+
+  </div>
+  
+    <div class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1 class="m-0 text-dark">Users</h1>
+          </div><!-- /.col -->
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a href="#">Home</a></li>
+              <li class="breadcrumb-item active">Users</li>
+            </ol>
+          </div><!-- /.col -->
+        </div><!-- /.row -->
+      </div><!-- /.container-fluid -->
+    </div>
+    <!-- /.content-header -->
+
+    <!-- Main content -->
+    <section class="content">
+      <div class="container-fluid">
+        <div class="container mt-2 mb-2">
+          <table class="display"
+            data-toggle="table"
+            data-pagination="true"
+            data-search = "true"
+            data-search-align="true"
+            data-pagination-pre-text="Previous"
+            data-pagination-next-text="Next"
+            data-pagination-h-align="left"
+            data-pagination-detail-h-align="right"
+            data-page-list="[1]">
+            <thead>
+              <tr>
+                <th data-field = 'id' class="txt-color" data-sortable="true">ID</th>
+                <th data-field = 'usename'class="txt-color"  data-sortable="true">Username</th>
+                <th data-field = 'email' class="txt-color" data-sortable="true">Email</th>
+                <th data-field = 'fullname' class="txt-color" data-sortable="true">Full Name</th>
+                <th data-field = 'group' class="txt-color" data-sortable="true">Group</th>
+                <th data-field = 'active' class="txt-color" >Active</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for user in users %}
+              <tr id="{{user.id}}">
+                <td class="txt-color">{{user.id}}</td>
+                <td class="txt-color">{{user.username}}</td>
+                <td class="txt">{{user}}</td>
+                <td class="txt">{{user.get_full_name}}</td>
+                <td class="txt">
+                    {%if user.is_superuser%}
+                    Superuser
+                    {%else%}
+                    {{user.groups.first.name}}
+                    {%endif%}
+                </td>
+                <td class="txt">{{user.is_active}}</td>
+              </tr>
+              {%endfor%}
+            </tbody>
+            </table>
+            
+          </div>
+        </div><!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->
+  </div>
+  <!-- /.content-wrapper -->
+
+{% endblock main-content %}

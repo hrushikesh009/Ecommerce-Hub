@@ -1,0 +1,119 @@
+{% extends 'store/index.html' %}
+{% load static %}
+{% block title %}Track Order{% endblock title %}
+{% block main_content %}
+
+
+<section id="my-order">
+	<div class="container">
+		<div class="breadcrumbs">
+			<ol class="breadcrumb">
+				<li><a href="{% url 'store:home-view'%}">Home</a></li>
+				<li class="active">Track My Order</li>
+			</ol>
+		</div><!--/breadcrums-->
+        <div id="contact-page" class="container">
+            <div class="bg">    	
+                <div class="row">  	
+                    <div class="col-sm-9">
+                        <div class="contact-form">
+                            <h2 class="title text-center">Track My Order</h2>
+                            <div class="status alert alert-success" style="display: none"></div>
+                            {% if form.errors and not form.non_field_errors %}
+                            <p class="alert alert-danger">
+                                {% if form.errors.items|length == 1 %}
+                                Please correct the error below.
+                                {%else%}
+                                Please correct the error below.
+                                {% endif %}
+                            </p>
+                            {% endif %}
+        
+                            {% if form.non_field_errors %}
+                            {% for error in form.non_field_errors %}
+                                <p class="alert alert-danger">
+                                    {{ error }}
+                                </p>
+                            {% endfor %}
+                            {% endif %}
+                            <form id="track-order-form" action= "#" class="contact-form row" name="track-order-form" method="post">
+                                {%csrf_token%}
+                                <div class="form-group col-md-9">
+                                    <label class="required" style="color:#FE980F">{{form.orderid.label}}</label>
+                                    {{form.orderid}}
+                                    {{form.orderid.errors}}
+                                </div>
+                                <div class="form-group col-md-9">
+                                    <label class="required" style="color:#FE980F">{{form.email.label}}</label>
+                                    {{form.email}}
+                                    {{form.email.errors}}
+                                </div>
+        
+                                <div class="form-group col-md-9">
+                                    <input type="submit" name="submit" class="btn btn-primary pull-right" value="Submit">
+                                </div>
+                            </form>
+                        </div>
+                        <section id="cart_items">
+                            
+                
+                            <div class="table-responsive cart_info">
+                                <table class="table table-condensed">
+                                    <thead>
+                                        <tr class="cart_menu">
+                                            <td class="image">Order ID</td>
+                                            <td class="description">Payment Type</td>
+                                            <td class="price">Grand Total</td>
+                                            <td class="quantity">Status</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% if order_details%}
+                                        <tr>
+                                            <td class="cart_product">
+                                                <p>{{order_details.id}}</p>
+                                            </td>
+                                            <td class="cart_description">
+                                                <p>{{order_details.payment_gateway.name}}</p>
+                                            </td>
+                                            <td class="cart_price">
+                                                <p>{{order_details.grand_total}}</p>
+                                            </td>
+                                            <td class="cart_quantity">
+                                                <p>{{order_details.status}}</p>
+                                            </td>
+                                        </tr>
+                                        {%else%}
+                                        <tr>
+                                            <td style="text-align: center;">No Orders to display :)</td>
+                                        </tr>
+                                        {%endif%}
+                                    </tbody>
+                                </table>
+                            </div>
+                            
+                    </section>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="list-group">
+                            <a href="{% url 'store:myaccount-view' %}" class="list-group-item">MyAccount</a>
+                            <a href="{% url 'store:password-change-view' %}" class="list-group-item">Change Password</a>
+                            <a href="{% url 'store:address-view' %}" class="list-group-item">Address Book</a>
+                            <a href="{% url 'store:order-view' %}" class="list-group-item">My Orders</a>
+                            <a href="{% url 'store:track-order-view' %}" class="list-group-item">Track My Orders</a>
+
+                        </div>
+                    </div> 
+        
+                                    
+                </div>  
+            </div>	
+        </div>
+		
+    </div>
+</section>
+
+
+
+{% endblock main_content %}
+	

@@ -1,0 +1,73 @@
+{% extends 'store/index.html' %}
+{% load static %}
+{% block title %}MyWishlist{% endblock title %}
+
+{% block main_content%}
+	<section id="cart_items">
+		<div class="container">
+			<div class="breadcrumbs">
+				<ol class="breadcrumb">
+				  <li><a href="{% url 'store:home-view'%}">Home</a></li>
+				  <li class="active">My Wishlist</li>
+				</ol>
+			</div>
+			<div class="table-responsive cart_info">
+				<table class="table table-condensed">
+					<thead>
+						<tr class="cart_menu">
+							<td class="image">Item</td>
+							<td class="description"></td>
+							<td class="price">Price</td>
+                            <td class="price">Stock</td>
+							<td></td>
+						</tr>
+					</thead>
+					<tbody>
+                        {%if wishlistitems%}
+                        {% for items in wishlistitems %}
+                        <tr>
+							<td class="cart_product">
+								<a href="">
+									{%if items.product.images_set.first%}
+									<img src="{{items.product.images_set.first.image.url}}" alt="{{items.product.title}}" />
+									{%else%}
+									<img src="{% static 'images/default-picture.png'%}" alt="default-picture" />
+									{%endif%}
+								</a>
+							</td>
+							<td class="cart_description">
+								<h4><a href="">{{items.product.title}}</a></h4>
+								<p>Web ID: 1089772</p>
+							</td>
+							<td class="cart_price">
+								{%if items.product.check_if_special_price%}
+								<p><del>{{items.product.price}}</del><br>{{items.product.special_price}}</p>
+								{%else%}
+								<p>{{items.product.price}}</p>
+								{%endif%}
+							</td>
+							<td class="cart_quantity">
+                                <p>{{items.product.quantity}}</p>
+							</td>
+							<td class="cart_delete">
+								{%csrf_token%}
+								<button class="btn btn-primary" type ="button" name="WishList" id ="wishlist-button" value="{{items.id}}"><i class="fa fa-times"></i></button>
+								<a class="btn btn-primary" href="{% url 'store:product-detail-view' items.product.id %}"><i class="fa fa-shopping-cart"></i></a>
+							</td>
+						</tr>
+						{%endfor%}
+						{%else%}
+						<tr>
+							<td style="text-align: center;">No Product in the Wishlist use add wishlist Button to add the Product :)</td>
+						</tr>
+                        {%endif%}
+						
+						
+
+						
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</section> <!--/#cart_items-->
+{% endblock main_content%}

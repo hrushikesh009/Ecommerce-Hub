@@ -1,0 +1,55 @@
+{% extends 'store/index.html' %}
+{% load static %}
+{% block title %}Address Book{% endblock title %}
+{% block main_content %}
+
+
+<div id="contact-page" class="container">
+	<div class="bg">    	
+		<div class="row">  	
+			<div class="col-sm-9">
+                <div id="content" class="col-sm-9">
+                    {%csrf_token%}
+                    <h2>Address Book Entries</h2>
+                    <div class="table-responsive">
+                        {%if address%}
+                        {%for add in address%}
+                        <table class="table table-bordered table-hover">
+                            <tr>
+                            <td class="text-left">{{add.user.get_full_name}}<br />{{add.address}}<br />{{add.city}} {{add.postcode}}<br />{{add.state}}<br />{{add.country}}</td>
+                            <td class="text-right"><a href="{% url 'store:address-edit-view' add.id %}" class="btn btn-info">Edit</a> &nbsp; <button class="btn btn-danger" type ="button" id = "del_address" name="Address" value = {{add.id}} >Delete</button></td>
+                            </tr>
+                        </table>
+                        {%endfor%}
+                       
+                        {%else%}
+                        <table class="table table-bordered table-hover">
+                            <tr>No Entries Found! Please use Button below to add new Address</tr>
+                        </table>
+                        {%endif%}
+                        
+                    </div>
+                    <div class="buttons clearfix">
+                        <div class="pull-left"><a href="{% url 'store:address-add-view'%}" class="btn btn-primary">New Address</a></div>
+                    </div>
+                </div>
+			</div>
+            <div class="col-sm-3">
+                <div class="list-group">
+                    <a href="{% url 'store:myaccount-view' %}" class="list-group-item">MyAccount</a>
+                    <a href="{% url 'store:password-change-view' %}" class="list-group-item">Change Password</a>
+                    <a href="{% url 'store:address-view' %}" class="list-group-item">Address Book</a>
+                    <a href="{% url 'store:order-view' %}" class="list-group-item">My Orders</a>
+                    <a href="{% url 'store:track-order-view' %}" class="list-group-item">Track My Orders</a>
+
+                </div>
+			</div> 
+
+			    			
+		</div>  
+	</div>	
+</div><!--/#contact-page-->
+
+{% endblock main_content %}
+	
+	

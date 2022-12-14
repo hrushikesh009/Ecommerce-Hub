@@ -1,0 +1,102 @@
+{% extends 'custom_admin/index.html' %}
+{% load static %}
+{% block title %}Banner Update{% endblock title %}
+{% block main-content %}
+
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <div class="container">
+      {% if messages %}
+      {% for message in messages %}
+          <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}">
+          {{ message }}
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+      {% endfor %}
+      {% endif %}
+
+    </div>
+    
+    <div class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1 class="m-0 text-dark">Banner</h1>
+          </div><!-- /.col -->
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a href="{% url 'custom_admin:admin-home-view' %}">Home</a></li>
+              <li class="breadcrumb-item active">Banner Update</li>
+            </ol>
+          </div><!-- /.col -->
+        </div><!-- /.row -->
+      </div><!-- /.container-fluid -->
+    </div>
+    <!-- /.content-header -->
+
+    <!-- Main content -->
+    <section class="content">
+      <div class="container-fluid">
+        <form action="" method ="post" enctype="multipart/form-data">
+          {% csrf_token %}
+          <input type="hidden" name="banner_id" id="id_banner" value="{{banner.id}}">
+       <div class="card">
+          <ul class="nav nav-tabs" id="myTab" role="tablist">
+            <li class="nav-item">
+              <a class="nav-link active" id="general-tab" data-toggle="tab" href="#general" role="tab" aria-controls="general" aria-selected="true">General</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" id="banner-image-tab" data-toggle="tab" href="#banner_image" role="tab" aria-controls="banner_image" aria-selected="false">Image</a>
+            </li>
+          </ul>
+          <div class="tab-content" id="myTabContent">
+            <div class="tab-pane fade show active" id="general" role="tabpanel" aria-labelledby="general-tab">
+              <div class="form-group mx-4 mt-4 mb-4">
+                    {{ form.non_form_errors }}
+                    {{ form.media }}
+                    {{form.as_p}}
+                  
+               </div>
+            </div>
+            <div class="tab-pane fade" id="banner_image" role="tabpanel" aria-labelledby="banner-image-tab">
+              <div class="form-group mx-4 mt-4 mb-4">
+                {{formset.management_form}}
+                <div id="form_set_banner">
+                    {% for form in formset %}
+                    <table>
+                      {{form.non_field_errors}}
+                      {{form.errors}}
+                      {{form.as_table}}
+                    <button type ="button" style="float: right;" name="Banner" id ="del_btn_formset_banner" class = "btn btn-danger" value="{{form.instance.id}}"><i class="fas fa-trash"></i></button>
+                    </table>
+                      
+                    <hr>
+                    {%endfor%}
+
+                </div>
+                <input type="button" class = "btn btn-primary" value="Add More" id="add_more_banner">
+                <div id="empty_form_banner" style="display: none;">
+                  <table class="no_error">
+                    {{formset.empty_form}}
+                  </table>
+                </div>                    
+                   
+                
+            </div>
+            </div>
+          </div>
+          
+        
+        <button type="submit" class="mt-4 mx-4 mb-4 btn btn-primary">Update</button>
+      </div>
+      </form>
+      </div><!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->
+  </div>
+  <!-- /.content-wrapper -->
+ 
+{% endblock main-content %}

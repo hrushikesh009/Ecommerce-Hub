@@ -1,0 +1,90 @@
+{% extends 'custom_admin/index.html' %}
+{% load static %}
+{% block title %}CMS{% endblock title %}
+{% block main-content %}
+
+
+{% block content %}
+{% endblock content %}
+
+<div class="content-wrapper">
+  <div class="container">
+    {% if messages %}
+    {% for message in messages %}
+        <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}">
+        {{ message }}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+    {% endfor %}
+    {% endif %}
+
+  </div>
+  
+    <div class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1 class="m-0 text-dark">CMS List</h1>
+          </div><!-- /.col -->
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a href="{% url 'custom_admin:admin-home-view' %}">Home</a></li>
+              <li class="breadcrumb-item active">CMS</li>
+            </ol>
+          </div><!-- /.col -->
+        </div><!-- /.row -->
+      </div><!-- /.container-fluid -->
+    </div>
+    <!-- /.content-header -->
+
+    <!-- Main content -->
+    <section class="content">
+      <div class="container-fluid">
+        <div class="container mt-2 mb-2">
+          {% csrf_token %}
+          <table class="display"
+            data-toggle="table"
+            data-pagination="true"
+            data-search = "true"
+            data-search-align="true"
+            data-pagination-pre-text="Previous"
+            data-pagination-next-text="Next"
+            data-pagination-h-align="left"
+            data-pagination-detail-h-align="right"
+            data-page-list="[10,20,30,40,50]">
+            <a href="{% url 'custom_admin:cms-add-view' %}" class ="add-btn" ><i class="fas fa-plus"></i>Add CMS</a>
+            <a href="" class="del-btn" id="delete_btn">Delete</a>
+            <thead>
+              <tr>
+                <th class="txt-color">Select</th>
+                <th data-field = 'id' class="txt-color" data-sortable="true">ID</th>
+                <th data-field = 'title 'class="txt-color"  data-sortable="true">Title</th>
+                <th data-field = 'url' class="txt-color"  data-sortable="true">URL</th>
+                <th data-field = 'sites'class="txt-color"  data-sortable="true">Sites</th>
+                <th data-field = 'action' class="txt-color">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for page in cms %}
+              <tr id="{{page.id}}">
+                <td><input name = "page_id[]" type ="checkbox" value="{{page.id}}" id ="delete"></td>
+                <td class="txt-color">{{page.id}}</td>
+                <td class="txt">{{page.title}}</td>
+                <td class="txt">{{page.url}}</td>
+                <td class="txt">{{page.sites}}</td>
+                <td class="txt-color"><a href="{% url 'custom_admin:cms-update-view' page.id%}" class="action-btn"><i class= " mx-4 fas fa-edit"></i></a></td>
+              </tr>
+              {%endfor%}
+            </tbody>
+            </table>
+            
+          </div>
+        </div><!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->
+  </div>
+  <!-- /.content-wrapper -->
+
+{% endblock main-content %}

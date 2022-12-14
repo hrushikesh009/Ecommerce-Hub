@@ -1,0 +1,157 @@
+{% extends 'store/index.html' %}
+{% load static %}
+{% block title %}Make Payment{% endblock title %}
+
+{% block main_content%}
+
+<section id="cart_items">
+	<div class="container">
+		<div class="breadcrumbs">
+			<ol class="breadcrumb">
+				<li><a href="{% url 'store:home-view'%}">Home</a></li>
+				<li class="active">Payment </li>
+			</ol>
+		</div><!--/breadcrums-->
+
+		<div class="step-one">
+			<h2 class="heading">Make Payment</h2>
+		</div>
+        <!-- Main content -->
+    <section class="content">
+        <div class="container-fluid">
+              {% if order_detail%}
+              {%csrf_token%}
+              <div class="row">
+                  <div class="col-md-6">
+                      <div class="panel panel-default">
+                          <div class="panel-heading">
+                          <h3 class="panel-title"><i class="mr-2 fa fa-shopping-cart"></i> Order Details</h3>
+                          </div>
+                      <table class="table">
+                      <tbody>
+                          <tr>
+                          <td style="width: 1%;"><button data-toggle="tooltip" title="Store" class="btn btn-info btn-xs"><i class="fa fa-shopping-cart fa-fw"></i></button></td>
+                          <td><a>{{order_detail.id}}</a></td>
+                          </tr>
+                          <tr>
+                          <td><button data-toggle="tooltip" title="Date Added" class="btn btn-info btn-xs"><i class="fa fa-calendar fa-fw"></i></button></td>
+                          <td>{{order_detail.placed_at}}</td>
+                          </tr>
+                          <tr>
+                          <td><button data-toggle="tooltip" title="Payment Method" class="btn btn-info btn-xs"><i class="fa fa-credit-card fa-fw"></i></button></td>
+                          <td>{{order_detail.payment_gateway}}</td>
+                          </tr>
+                          <tr>
+                          <td><button data-toggle="tooltip" title="Shipping Method" class="btn btn-info btn-xs"><i class="fa fa-truck fa-fw"></i></button></td>
+                          <td>{{order_detail.shipping_method}}</td>
+                      </tr>
+                      </tbody>
+                      </table>
+                      </div>
+                  </div>
+                  <div class="col-md-4">
+                      <div class="panel panel-default">
+                          <div class="panel-heading">
+                          <h3 class="panel-title"><i class="mr-2 fa fa-user"></i> Customer Details</h3>
+                          </div>
+                          <table class="table">
+                              <tr>
+                              <td style="width: 1%;"><button data-toggle="tooltip" title="Customer" class="btn btn-info btn-xs"><i class="fa fa-user fa-fw"></i></button></td>
+                              <td> <a>{{order_detail.user.get_full_name}}</a> </td>
+                              </tr>
+                              <tr>
+                              <td><button data-toggle="tooltip" title="E-Mail" class="btn btn-info btn-xs"><i class="fa fa-envelope fa-fw"></i></button></td>
+                              <td><a>{{order_detail.user.email}}</a></td>
+                              </tr>
+                          </table>
+                      </div>
+                  </div>
+              </div>
+              
+            <div class="panel panel-default mt-4">
+              <div class="panel-heading">
+              <h3 class="panel-title"><i class="fa fa-info-circle mr-2"></i> Order ({{order_detail.id}})</h3>
+              </div>
+              <div class="panel-body">
+                  <table class="table table-bordered">
+                      <thead>
+                      <tr>
+                      <td style="width: 50%;" class="text-left">Billing Address</td>
+                      <td style="width: 50%;" class="text-left">Shipping Address</td>
+                      </tr>
+                      </thead>
+                      <tbody>
+                          <tr>
+                          <td class="text-left">{{order_detail.billing_address}}<br/>{{order_detail.billing_city}},{{order_detail.billing_postcode}}<br/>{{order_detail.billing_state}}<br/>{{order_detail.billing_country}}<br/></td>
+                          <td class="text-left">{{order_detail.shipping_address}}<br/>{{order_detail.shipping_city}},{{order_detail.shipping_postcode}}<br/>{{order_detail.shipping_state}}<br/>{{order_detail.shipping_country}}<br/></td>
+                          </tr>
+                      </tbody>
+                  </table>
+                  <table class="table table-bordered">
+                      <thead>
+                      <tr>
+                      <td class="text-left">Product</td>
+                      <td class="text-left">Model</td>
+                      <td class="text-right">Quantity</td>
+                      <td class="text-right">Unit Price</td>
+                      <td class="text-right">Total</td>
+                      </tr>
+                      </thead>
+                      <tbody>
+                          {% if order_detail.orderitem_set %}
+                          {%for product in order_detail.orderitem_set.all %}
+                          <tr>
+                              <td class="text-left"><a href="">{{product.product.title}}</a></td>
+                              <td class="text-left">Product 21</td>
+                              <td class="text-right">{{product.quantity}}</td>
+                              <td class="text-right">{{product.unit_price}}</td>
+                              <td class="text-right">{{product.total}}</td>
+                          </tr>
+                          {%endfor%}
+                          {%else%}
+                          
+                          {%endif%}
+                          <tr>
+                          <td colspan="4" class="text-right">Sub-Total</td>
+                          <td class="text-right">{{order_detail.total_price}}</td>
+                          </tr>
+                          <tr>
+                          <td colspan="4" class="text-right">Flat Shipping Rate</td>
+                          <td class="text-right">{{order_detail.shipping_charges}}</td>
+                          </tr>
+                          {% if order_detail.coupon%}
+                          <tr>
+                            <td colspan="4" class="text-right">Coupon Applied</td>
+                            <td class="text-right">{{order_detail.coupon.percent_off}}% OFF</td>
+                          </tr>
+                          {%else%}
+                          <tr>
+                            <td colspan="4" class="text-right">Coupon Applied</td>
+                            <td class="text-right">-----</td>
+                          </tr>
+                          {%endif%}
+                          
+                          <tr>
+                          <td colspan="4" class="text-right">Total</td>
+                          <td class="text-right">{{order_detail.grand_total}}</td>
+                          </tr>
+                      </tbody>
+                  </table>
+              </div>
+          </div>
+          <div class="col-sm-3 pull-right">
+              <div id="paypal-button-container"></div>          
+          </div>
+          {%else%}
+          {%endif%}
+              
+              
+          
+          </div><!-- /.container-fluid -->
+      </section>
+		
+		
+	</div>
+</section> <!--/#cart_items-->
+
+{% endblock main_content%}

@@ -1,0 +1,237 @@
+{% extends 'store/index.html' %}
+{% load static %}
+{% block title %}CheckOut{% endblock title %}
+
+{% block main_content%}
+
+<section id="cart_items">
+	<div class="container">
+		<div class="breadcrumbs">
+			<ol class="breadcrumb">
+				<li><a href="{% url 'store:home-view'%}">Home</a></li>
+				<li class="active">Check out</li>
+			</ol>
+		</div><!--/breadcrums-->
+		{%if existing_payment_order_id%}
+		<h5>You have an Existing Paypal Payment to be completed! Please Complete it first or you won't be able to make new order</h5>
+		<h6>Click on the button to Make Payment!</h6>
+		<a class="btn btn-primary" href="{% url 'store:payment-view' existing_payment_order_id %}">Make Payment</a>
+		<form style = "float: right; "method="post" action="{% url 'store:order-delete-view' existing_payment_order_id %}">
+			{%csrf_token%}
+			<input type="submit" value="Delete Order" class="btn btn-danger">
+		</form>
+		{%endif%}
+		<br>
+		<a class="btn btn-primary" href="{% url 'store:cart-list-view'%}">Go to Back Cart</a>
+		<div class="step-one">
+			<h2 class="heading">CheckOut</h2>
+		</div>
+		<div class="review-payment">
+			<h2>Select Address</h2>
+		</div>
+		<form id="checkout-form" action= "." name ="Checkout" method="post">
+			{%csrf_token%}
+			<div class="form-check">
+				<div class="row">
+					{%if address%}
+					{%for add in address%}
+					<div class="col-sm-3">
+						<input class="form-check-input m-4" type="radio" name="Address" value={{add.id}} id="address-radio-btn">
+						<label class="form-check-label" for="address_{{add.id}}">
+							<div style="border: 1px solid lightgrey; padding: 10px; border-radius: 3px;">
+								<div class="card-body">
+									{%if add.user.get_full_name%}
+									{{add.user.get_full_name}}
+									{%else%}
+									{{add.user.username}}
+									{%endif%}
+									<br />{{add.address|truncatewords:5}}<br />{{add.city}} {{add.postcode}}<br />
+								</div>
+							</div>
+						</label>
+					</div>
+					{%endfor%}
+					{%else%}
+					<p style="margin: 0px 20px;">No address was found! Use the checkox Below to Fill up the Address or Add address to My Account :)</p>
+					{%endif%}
+				</div>
+		    </div>
+			<div id="checkbox-address">
+				{% if form.errors%}
+				<label style="margin: 20px 0px"><input type="checkbox" id="fill_address" name="Fill_Address" checked>  Want to Fill your own Address?</label>
+				{%else%}
+				<label style="margin: 20px 0px"><input type="checkbox" id="fill_address" name="Fill_Address">  Want to Fill your own Address?</label>
+				{%endif%}
+			</div>
+			
+			
+			<div class="shopper-informations">
+				<div class="row">
+					<div class="col-sm-5 clearfix">
+						<div class="bill-to">
+							<div class="status alert alert-success" style="display: none"></div>
+							
+							{%if form.errors%}
+							<div id="address-form">
+							{%else%}
+							<div id="address-form" style="display: none;">
+							{%endif%}
+								{% if form.errors and not form.non_field_errors %}
+								<p class="alert alert-danger">
+									{% if form.errors.items|length == 1 %}
+									Please correct the error below.
+									{%else%}
+									Please correct the error below.
+									{% endif %}
+								</p>
+								{% endif %}
+
+								{% if form.non_field_errors %}
+								{% for error in form.non_field_errors %}
+									<p class="alert alert-danger">
+										{{ error }}
+									</p>
+								{% endfor %}
+								{% endif %}
+								<p style="margin-left: 15px;">Bill To</p>
+								
+								<div class="col-md-12">
+									<label style="color:#FE980F">{{form.address.label}}</label>
+									{{form.address}}
+									{{form.address.errors}}
+								</div>
+								<div class="form-group col-md-6">
+									<label style="color:#FE980F">{{form.city.label}}</label>
+									{{form.city}}
+									{{form.city.errors}}
+								</div>
+								<div class="form-group col-md-6">
+									<label style="color:#FE980F">{{form.postcode.label}}</label>
+									{{form.postcode}}
+									{{form.postcode.errors}}
+								</div>
+								<div class="form-group col-md-6">
+									<label style="color:#FE980F">{{form.state.label}}</label>
+									{{form.state}}
+									{{form.state.errors}}
+								</div>
+								<div class="form-group col-md-6">
+									<label style="color:#FE980F">{{form.country.label}}</label><br>
+									{{form.country}}
+									{{form.country.errors}}
+								</div>
+							</div>
+						</div>
+					</div>				
+				</div>
+			</div>
+			<label><input type="checkbox" name = "Shipping"checked> Shipping to bill address</label>
+			<div class="review-payment">
+				<h2>Review & Payment</h2>
+			</div>
+				<div class="table-responsive cart_info">
+					<table class="table table-condensed">
+						<thead>
+							<tr class="cart_menu">
+								<td class="image">Item</td>
+								<td class="description"></td>
+								<td class="price">Price</td>
+								<td class="quantity">Quantity</td>
+								<td class="total">Total</td>
+							</tr>
+						</thead>
+						<tbody>
+							{% if cart_detail.items.first %}
+							{% for items in cart_detail.items.all %}
+							<tr>
+								<td class="cart_product">
+									<a href="">
+										{%if items.product.images_set.first%}
+										<img src="{{items.product.images_set.first.image.url}}" alt="{{items.product.title}}" />
+										{%else%}
+										<img src="{% static 'images/default-picture.png'%}" alt="default-picture" />
+										{%endif%}
+									</a>
+								</td>
+								<td class="cart_description">
+									<h4><a href="">{{items.product.title}}</a></h4>
+									<p>Web ID: 1089772</p>
+								</td>
+								<td class="cart_price">
+									<p>{{items.unit_price}}</p>
+								</td>
+								<td class="cart_quantity">
+									<p>{{items.quantity}}</p>
+								</td>
+								<td class="cart_total">
+									<p class="cart_total_price">{{items.total}}</p>
+								</td>
+							</tr>
+							{%endfor%}
+							{%else%}
+							<tr>
+								<td style="text-align: center;">No Product in the Cart use add cart Button to add the Product :)</td>
+							</tr>
+							{%endif%}
+							<tr>
+								<td colspan="4">&nbsp;</td>
+								<td colspan="2">
+									<table class="table table-condensed total-result">
+										<tr>
+											<td>Cart Sub Total</td>
+											<td>${{cart_detail.total_price}}</td>
+										</tr>
+										{%if cart_detail.total_price >= 500 %}
+										<tr class="shipping-cost">
+											<td>Shipping Cost</td>
+											<td>Free</td>										
+										</tr>
+										{%else%}
+										<tr class="shipping-cost">
+											<td>Shipping Cost</td>
+											<td>$50</td>										
+										</tr>
+										{%endif%}
+										{%if coupon%}
+										<tr class="shipping-cost">
+											<td>Coupon Applied: {{coupon.code}}</td>
+											<td>{{coupon.percent_off}}%OFF</td>										
+										</tr>
+										{%else%}
+										{%endif%}
+										<tr>
+											<td>Total</td>
+											<td><span>${{total}}</span></td>
+										</tr>
+									</table>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			
+			<div class="payment-options">
+				{%if payment_methods%}
+				{%for payment in payment_methods%}
+				<span>
+					<label><input class="form-check-input m-4" type="radio" name="PaymentType" value={{payment}} id="payment_id">{{payment.name}}</label>
+				</span>
+				{%endfor%}
+				{%else%}
+				{%endif%}
+			</div>
+			<div id="checkout-submit-btn" class="form-group col-md-12">
+				{%if existing_payment_order_id%}
+				<input type="submit" class="btn btn-primary pull-right" value="Place Order" disabled>
+				{%else%}
+				<input type="submit" class="btn btn-primary pull-right" value="Place Order">
+				{%endif%}
+			</div>
+			
+			
+	    </form>
+		
+	</div>
+</section> <!--/#cart_items-->
+
+{% endblock main_content%}

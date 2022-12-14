@@ -1,0 +1,114 @@
+<table style="border: 1px solid gray; border-radius:2px;" cellpadding="5" cellspacing="0" style="margin-right: calc(6%); width: 80%;" width="800">
+   <tbody>
+      <tr>
+         <td style="width: 149.502%;" valign="top" width="100%">
+            <table style="border: 1px solid gray; border-radius:2px;" cellpadding="6" cellspacing="0" width="100%">
+               <tbody>
+                  <tr>
+                     <td bgcolor="#e1f0f8" style="width: 72.0056%;" width="58%">
+                        <h1><span style="font-size: 18px;">THANK YOU FOR YOUR ORDER FROM My Shopping cart.</span></h1>
+                        <p>Once your package ships, we will send an email with a link to track your order. Your order summary is below. Thank you again for your business.</p>
+                     </td>
+                     <td bgcolor="#e1f0f8" style="width: 27.8844%;" width="42%">
+                        <p><strong>Call Us:</strong> <a href="">+91 - 22 - <u>40500699</u></a><br><strong>Email:</strong> info@shoppingcompany.com</p>
+                     </td>
+                  </tr>
+               </tbody>
+            </table style="border: 1px solid gray; border-radius:2px;">
+         </td>
+      </tr>
+      <tr>
+         <td style="width: 149.502%;" valign="top" width="100%">
+            <h3><strong>Your order: {{order.id}}</strong></h3>
+            <p>Placed on DATE: {{order.created_at}}</p>
+            <table style="border: 1px solid gray; border-radius:2px;" cellpadding="7" cellspacing="0" style="margin-right: calc(3%); width: 97%;" width="100%">
+               <tbody>
+                  <tr>
+                     <td style="width: 6.0506%;" width="20%">
+                        <p>Sr No</p>
+                     </td>
+                     <td style="width: 32.5976%;" width="20%">
+                        <p>Product</p>
+                     </td>
+                     <td style="width: 26.4044%;" width="20%">
+                        <p>Quantity</p>
+                     </td>
+                     <td style="width: 18.4251%;" width="20%">
+                        <p>Unit Price</p>
+                     </td>
+                     <td style="width: 16.5584%;" width="20%">
+                        <p>Total</p>
+                     </td>
+                  </tr>
+                  {%for product in order.orderitem_set.all%}
+                  <tr>
+                     <td style="width: 6.0506%;" width="20%">
+                        <p>{{product.product.id}}</p>
+                     </td>
+                     <td style="width: 32.5976%;" width="20%">
+                        <p>{{product.product.title}}</p>
+                        
+                     </td>
+                     <td style="width: 26.4044%;" width="20%">
+                        <p>{{product.quantity}}</p>
+                        
+                     </td>
+                     <td style="width: 18.4251%;" width="20%">
+                        <p>{{product.unit_price}}</p>
+                        
+                     </td>
+                     <td style="width: 16.5584%;" width="20%">
+                        <p>{{product.total}}</p>
+
+                     </td>
+                  </tr>
+                  {%endfor%}
+               </tbody>
+            </table style="border: 1px solid gray; border-radius:2px;">
+         </td>
+      </tr>
+      <tr>
+         <td style="width: 149.502%;" valign="top" width="100%">
+            <p>Total:{{order.grand_total}}</p>
+            <table cellpadding="10" cellspacing="0" style="margin-right: calc(2%); width: 98%;" width="590">
+               <tbody>
+                  <tr>
+                     <td style="width: 147.508%;" valign="top" width="100%">
+                        <h5>
+                           BILL TO:
+                        </h5>
+                        <table style="border: 1px solid gray; border-radius:2px;" cellpadding="7" cellspacing="0" width="100%">
+                           <tbody>
+                              <tr>
+                                 <td style="width: 18.0488%;" width="50%">
+                                    <p>Billing Address</p>
+                                 </td>
+                                 <td style="width: 81.8361%;" width="50%">
+                                    <p>{{order.billing_address}}<br/>{{order.billing_city}},{{order.billing_postcode}}<br/>{{order.billing_state}}<br/>{{order.billing_country}}</p>
+                                 </td>
+                              </tr>
+                              <tr>
+                                <td style="width: 18.0488%;" width="50%">
+                                    <p>Shipping Address</p>
+                                 </td>
+                                 <td style="width: 18.0488%;" width="50%">
+                                    <p>{{order.shipping_address}}<br/>{{order.shipping_city}},{{order.shipping_postcode}}<br/>{{order.shipping_state}}<br/>{{order.shipping_country}}</p>
+                                 </td>
+                                 
+                              </tr>
+                           </tbody>
+                        </table style="border: 1px solid gray; border-radius:2px;">
+                     </td>
+                  </tr>
+                  <tr>
+                     <td style="width: 147.508%;" valign="top" width="100%">
+                        <h5>PAYMENT METHOD:{{order.payment_gateway}}</h5>
+                     </td>
+                  </tr>
+               </tbody>
+            </table style="border: 1px solid gray; border-radius:2px;">
+         </td>
+      </tr>
+      <tr></tr>
+   </tbody>
+</table>
